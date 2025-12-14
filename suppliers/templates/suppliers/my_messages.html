@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+{% block content %}
+
+<div class="container" style="max-width:700px;">
+  <h4 class="mb-3">My Messages</h4>
+
+  {% for msg in messages %}
+    <div class="card mb-2 {% if not msg.is_read %}border-primary{% endif %}">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <strong>{{ msg.sender.username }}</strong>
+          <small class="text-muted">
+            {{ msg.created_at|date:"M d, Y H:i" }}
+          </small>
+        </div>
+        <p class="mb-1">{{ msg.message }}</p>
+
+        <a href="{% url 'my_messages' msg.order.id %}"
+           class="small">
+          View Order
+        </a>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">No messages yet.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

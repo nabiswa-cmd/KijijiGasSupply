@@ -1,0 +1,77 @@
+{% extends 'main.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container py-5" style="max-width:640px;">
+  <div class="card shadow-sm" style="border-radius:14px; overflow:hidden;">
+    <div class="card-header" style="background: linear-gradient(90deg,#0D47A1,#1976D2); color:#fff;">
+      <h4 class="mb-0">Create Customer Account</h4>
+    </div>
+
+    <div class="card-body">
+      {% if messages %}
+        {% for m in messages %}
+          <div class="alert alert-{{ m.tags }}">{{ m }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          {{ form.username|add_class:"form-control" }}
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          {{ form.email|add_class:"form-control" }}
+        </div>
+
+        <!-- County -->
+        <div class="mb-3">
+          <label class="form-label">County</label>
+          {{ form.county|add_class:"form-control" }}
+        </div>
+
+        <!-- Area -->
+        <div class="mb-3">
+          <label class="form-label">Area / Town</label>
+          {{ form.area|add_class:"form-control" }}
+        </div>
+
+        <!-- Exact Location -->
+        <div class="mb-3">
+          <label class="form-label">Exact Location (optional)</label>
+          {{ form.exact_location|add_class:"form-control" }}
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          {{ form.password1|add_class:"form-control" }}
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3">
+          <label class="form-label">Confirm Password</label>
+          {{ form.password2|add_class:"form-control" }}
+        </div>
+
+        <button type="submit" class="btn btn-warning w-100 fw-bold">
+          Create Account
+        </button>
+
+        <div class="text-center mt-3">
+          <small>Already have an account?
+            <a href="{% url 'user_login' %}">Log in</a>
+          </small>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

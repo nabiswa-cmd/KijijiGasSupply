@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+
+{%block content %}
+<h5>Messages</h5>
+
+<div class="border p-3 mb-3" style="max-height:250px; overflow-y:auto;">
+    {% for msg in order.messages.all %}
+        <div class="mb-2">
+            <strong>{{ msg.sender.username }}</strong>
+            <small class="text-muted">{{ msg.created_at|date:"M d, Y H:i" }}</small>
+            <p class="mb-1">{{ msg.message }}</p>
+        </div>
+    {% empty %}
+        <p class="text-muted">No messages yet.</p>
+    {% endfor %}
+</div>
+
+<form method="post" action="{% url 'send_order_message' order.id %}">
+    {% csrf_token %}
+    <textarea name="message" class="form-control mb-2" rows="3"
+              placeholder="Send message to customer..."></textarea>
+    <button class="btn btn-primary btn-sm">Send</button>
+</form>
+{% endblock %}

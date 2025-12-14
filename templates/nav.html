@@ -1,0 +1,106 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark"
+     style="background: linear-gradient(90deg, #0D47A1, #42A5F5);">
+  <div class="container">
+
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold text-white" href="{% url 'home' %}">
+      KijijiGas
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navMenu"
+            aria-controls="navMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        {% if user.is_authenticated %}
+
+          {% if user.suppliers %}
+          <li class="nav-item me-3">
+            <a class="nav-link position-relative text-white" href="{% url 'supplier_orders' %}">
+              Orders
+              {% if unread_orders > 0 %}
+              <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                {{ unread_orders }}
+              </span>
+              {% endif %}
+            </a>
+          </li>
+          {% endif %}
+
+          {% if not user.suppliers %}
+          <li class="nav-item me-3">
+            <a class="nav-link text-white" href="{% url 'customer_orders' %}">
+              My Orders
+            </a>
+          </li>
+          {% endif %}
+
+          <li class="nav-item me-3">
+            <a class="nav-link position-relative text-white" href="{% url 'my_messages1' %}">
+              Messages
+              {% if unread_message_count > 0 %}
+              <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                {{ unread_message_count }}
+              </span>
+              {% endif %}
+            </a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center text-white"
+               href="#" role="button" data-bs-toggle="dropdown">
+
+              {% if user.suppliers and user.suppliers.image %}
+                <img src="{{ user.suppliers.image.url }}" class="rounded-circle me-2"
+                     style="width:35px;height:35px;object-fit:cover;">
+              {% elif user.customerprofile and user.customerprofile.profile_image %}
+                <img src="{{ user.customerprofile.profile_image.url }}" class="rounded-circle me-2"
+                     style="width:35px;height:35px;object-fit:cover;">
+              {% else %}
+                <img src="{% static 'images/default.svg' %}" class="rounded-circle me-2"
+                     style="width:35px;height:35px;object-fit:cover;">
+              {% endif %}
+
+              {{ user.username }}
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% if user.suppliers %}
+                <li><a class="dropdown-item" href="{% url 'supplier_dashboard' %}">Dashboard</a></li>
+                <li><a class="dropdown-item" href="{% url 'edit_supplier_profile' %}">Edit Profile</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="{% url 'edit_profile' %}">Edit Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'customer_orders' %}">My Orders</a></li>
+              {% endif %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="{% url 'user_logout' %}">Logout</a></li>
+            </ul>
+          </li>
+
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'customer_register' %}">Register as Customer</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{% url 'user_login' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+
+      {% if not user.is_authenticated %}
+        <a href="{% url 'supplier_register' %}" class="btn btn-warning ms-3 fw-bold">
+          Become Supplier
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</nav>

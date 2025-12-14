@@ -1,0 +1,118 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<h2 class="mb-4" style="color: #0D47A1;">Find Suppliers</h2>
+<div class="hero text-center mb-4">
+    <p>Search suppliers live as you type</p>
+    <div class="search-bar d-flex justify-content-center mt-3">
+        <input id="liveSearch" type="text" class="form-control" placeholder="Enter supplier name or location" style="max-width: 500px;">
+    </div>
+</div>
+
+<style>
+/* Hero styling */
+.hero {
+    padding: 2rem;
+    background: linear-gradient(135deg, #0D47A1, #42A5F5);
+    color: white;
+    border-radius: 12px;
+    max-width: 100%;
+    margin: auto;
+    /* Animation */
+    animation: floatY 3s ease-in-out infinite alternate;
+}
+
+/* Up and down floating */
+@keyframes floatY {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+/* Optional: For subtle left-right floating, combine animations */
+@keyframes floatX {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+/* To combine diagonal motion */
+.hero-diagonal {
+    animation: floatY 3s ease-in-out infinite alternate,
+               floatX 4s ease-in-out infinite alternate;
+}
+</style>
+
+
+<div class="row g-3" id="supplierResults">
+    {% for supplier in suppliers %}
+    <div class="col-12 col-md-6 col-lg-4 supplier-card">
+        <div class="card p-3">
+
+            <!-- Supplier Image -->
+            {% if supplier.image and supplier.image.url %}
+                <img src="{{ supplier.image.url }}" alt="{{ supplier.name }}"
+                     class="img-fluid rounded mb-2"
+                     style="height: 200px; width: 100%; object-fit: contain; background: #f8f9fa; padding: 10px; border-radius: 10px;">
+            {% else %}
+                <img src="{% static 'images/default.png' %}" alt="Default"
+                     class="img-fluid rounded mb-2"
+                     style="height: 200px; width: 100%; object-fit: contain; background: #f8f9fa; padding: 10px; border-radius: 10px;">
+            {% endif %}
+
+            <h5 class="card-title" style="color: #0D47A1;">{{ supplier.name }}</h5>
+            <p class="card-text mb-1">Location: {{ supplier.location }}</p>
+            <p class="card-text mb-1">Price: KES {{ supplier.refill_price }}</p>
+            <p class="card-text mb-1">Rating: 
+                {% for i in "12345" %}
+                    {% if forloop.counter <= supplier.rating|default:0 %}
+                        <span style="color:#FBC02D;">&#9733;</span>
+                    {% else %}
+                        <span style="color:#ccc;">&#9733;</span>
+                    {% endif %}
+                {% endfor %}
+            </p>
+            <a href="{% url 'supplier_profile' supplier.id %}" class="btn btn-primary mt-2">View Profile</a>
+            <a href="{% url 'place_order' supplier.id %}" class="btn btn-warning mt-2">Place Order</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No suppliers match your search criteria.</p>
+    {% endfor %}
+</div>
+
+<style>
+/* Hover animation for supplier cards */
+.supplier-card .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.supplier-card .card:hover {
+    transform: translateY(-10px) rotateZ(-1deg) scale(1.03);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+}
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#liveSearch').on('keyup', function() {
+        var query = $(this).val();
+
+        $.ajax({
+            url: "{% url 'home' %}",
+            data: { 'q': query },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(data) {
+                // Fade out old results, update content, then fade in
+                $('#supplierResults').fadeOut(150, function() {
+                    $(this).html(data).fadeIn(150);
+                });
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

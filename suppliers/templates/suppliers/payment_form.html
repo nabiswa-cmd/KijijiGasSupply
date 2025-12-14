@@ -1,0 +1,42 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <h3>Complete Payment</h3>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Customer Phone</label>
+      <input type="text"
+             name="customer_phone"
+             class="form-control"
+             value="{{ order.customer_phone }}">
+    </div>
+
+    <p><strong>Total Amount:</strong> KES {{ order.total_amount }}</p>
+
+    <div class="mb-3">
+      <label class="form-label">Cash Paid</label>
+      <input type="number" step="0.01" name="cash_paid"
+             class="form-control" value="0">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">MPESA / Till Paid</label>
+      <input type="number" step="0.01" name="mpesa_paid"
+             class="form-control" value="0">
+    </div>
+
+    <button type="submit" class="btn btn-success">
+      Complete Payment
+    </button>
+
+    <a href="{% url 'supplier_orders' %}" class="btn btn-secondary">
+      Cancel
+    </a>
+  </form>
+</div>
+
+{% endblock %}

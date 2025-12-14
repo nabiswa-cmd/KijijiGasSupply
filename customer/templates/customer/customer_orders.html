@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <h2 class="mb-4">My Orders</h2>
+
+  {% if orders %}
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Supplier</th>
+          <th>Quantity</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th>Ordered On</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ order.supplier.name }}</td>
+          <td>{{ order.quantity }}</td>
+
+          <!-- Order Status -->
+          <td>
+            {% if order.status == 'Pending' %}
+              <span class="badge bg-warning">Pending</span>
+            {% elif order.status == 'on the Way' %}
+              <span class="badge bg-info">On the Way</span>
+            {% elif order.status == 'Delivered' %}
+              <span class="badge bg-success">Delivered</span>
+            {% elif order.status == 'Cancelled' %}
+              <span class="badge bg-dark">Cancelled</span>
+            {% endif %}
+          </td>
+
+          <!-- Payment -->
+          <td>
+            <a href="{% url 'send_order_message' order.id %}" class="d-block mb-1">
+              Send message
+            </a>
+
+            {% if order.payment_status == 'unpaid' %}
+              <span class="badge bg-danger">Unpaid</span>
+            {% elif order.payment_status == 'payment_pending' %}
+              <span class="badge bg-warning">Payment Pending</span>
+            {% elif order.payment_status == 'paid' %}
+              <span class="badge bg-success">Paid</span>
+            {% endif %}
+          </td>
+
+          <!-- Date -->
+          <td>
+            {{ order.created_at|date:"d M Y H:i" }}
+          </td>
+
+          <!-- Actions -->
+          <td>
+            {% if order.status == 'Delivered' %}
+              {% if not order.rating_exists %}
+                <a href="{% url 'rate_supplier' order.id %}"
+                   class="btn btn-sm btn-primary">
+                  Rate Supplier
+                </a>
+              {% else %}
+                <span class="text-success">Rated</span>
+              {% endif %}
+
+            {% elif order.status == 'Pending' %}
+              <a href="{% url 'cancel_order' order.id %}"
+                 class="btn btn-sm btn-danger"
+                 onclick="return confirm('Are you sure you want to cancel this order?');">
+                Cancel
+              </a>
+
+            {% elif order.status == 'Cancelled' %}
+              <span class="text-muted">—</span>
+
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+    <p class="text-muted">You have no orders yet.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

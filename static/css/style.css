@@ -1,0 +1,50 @@
+/* Global Theme Colors */
+:root {
+    --primary: #0D47A1;    /* Blue */
+    --accent: #FFC107;     /* Yellow */
+    --text-dark: #0f172a;
+    --muted: #64748b;
+    --card-bg: #ffffff;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+}
+
+/* Navigation */
+.nav-link {
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+/* Hero Section */
+.hero {
+    padding: 4rem 1rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+    margin-top: 2rem;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+/* Feature Cards */
+.feature-card {
+    background: var(--card-bg);
+    padding: 1.8rem;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: .25s;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Buttons */
+.btn-warning {
+    background: var(--accent) !important;
+    border: none;
+}

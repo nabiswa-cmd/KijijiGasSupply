@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kijiji Gas System</title>
+
+  
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <style>
+    :root {
+      --primary: #0D47A1;
+      --accent: #FBC02D;
+      --bg-light: #F5F5F5;
+    }
+
+    body {
+      background-color: #f0f4ff;
+      font-family: 'Segoe UI', sans-serif;
+      position: relative;
+      overflow: auto;
+      min-height: 100vh;
+    }
+
+    /* Background Circles */
+    .bg-circle {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.30;
+      z-index: 0;
+      animation-duration: 7s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    /* Original Circles */
+    .circle-blue {
+      width: 250px;
+      height: 250px;
+      background: var(--primary);
+      top: -50px;
+      left: -50px;
+      animation-name: float1;
+    }
+
+    .circle-yellow {
+      width: 150px;
+      height: 150px;
+      background: var(--accent);
+      bottom: -30px;
+      right: -30px;
+      animation-name: float2;
+    }
+
+    /* New Circles */
+    .circle-blue-small {
+      width: 120px;
+      height: 120px;
+      background: var(--primary);
+      top: 40%;
+      left: 10%;
+      opacity: 0.25;
+      animation-name: float3;
+    }
+
+    .circle-yellow-large {
+      width: 300px;
+      height: 300px;
+      background: var(--accent);
+      top: 70%;
+      right: 20%;
+      opacity: 0.25;
+      animation-name: float4;
+    }
+
+    .circle-faint {
+      width: 180px;
+      height: 180px;
+      background: #90caf9;
+      top: 20%;
+      right: 5%;
+      opacity: 0.18;
+      animation-name: float5;
+    }
+
+    /* Animations to make each circle move differently */
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(20px, 25px); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(-15px, -20px); }
+    }
+
+    @keyframes float3 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(25px, -10px); }
+    }
+
+    @keyframes float4 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(-30px, 15px); }
+    }
+
+    @keyframes float5 {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(20px, -20px); }
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: var(--primary);
+      padding-block: 0.8rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    .navbar-brand {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: #e3e9ff;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Circles -->
+  <div class="bg-circle circle-blue"></div>
+  <div class="bg-circle circle-yellow"></div>
+  <div class="bg-circle circle-blue-small"></div>
+  <div class="bg-circle circle-yellow-large"></div>
+  <div class="bg-circle circle-faint"></div>
+
+  {% include 'nav.html' %}
+{% if messages %}
+      {% for m in messages %}
+        <div class="alert {% if m.tags %}alert-{{ m.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+          {{ m }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+  {% endif %}
+
+  <div class="container py-4">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+ <script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+
+</body>
+<!-- Footer -->
+<footer class="mt-5 bg-primary text-white pt-4 pb-3 position-relative">
+  <div class="container">
+    <div class="row">
+
+      <!-- About / Contact -->
+      <div class="col-md-8">
+        <h5>About Kijiji Gas</h5>
+        <p style="max-width: 500px;">
+          Welcome to Kijiji Gas System – your trusted supplier platform. 
+          For inquiries or support, reach out via WhatsApp: 
+          <a href="https://wa.me/254792390205" class="text-warning" target="_blank">+254792390205</a>. 
+          We are here to assist you with orders, supplier information, or any questions you might have.
+        </p>
+      </div>
+
+      <!-- Developed By -->
+      <div class="col-md-4 text-center">
+        <h6>Developed By</h6>
+        <img src="{% static 'images/nano-generated_2.png' %}" alt="Nabiswa James" 
+             class="rounded-circle mb-2" style="width: 80px; height: 80px; object-fit: cover; border: 2px solid #fff;">
+        <p class="mb-0">Nabiswa James</p>
+        <small>Super Admin</small>
+      </div>
+
+    </div>
+
+    <hr style="border-color: rgba(255,255,255,0.3);">
+
+    <div class="text-center small">
+      &copy; {{ now.year }} KijijiGas Supply. All rights reserved.
+    </div>
+  </div>
+</footer>
+</html>
