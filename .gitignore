@@ -1,2 +1,4 @@
 myenv
 .env
+db.sqlite3
+kijijiGas/db.sqlite3
