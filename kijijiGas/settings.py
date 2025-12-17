@@ -133,3 +133,8 @@ MPESA_CONSUMER_SECRET = config('MPESA_CONSUMER_SECRET', default='')
 MPESA_SHORTCODE = config('MPESA_SHORTCODE', default='')
 MPESA_PASSKEY = config('MPESA_PASSKEY', default='')
 MPESA_CALLBACK_URL = config('MPESA_CALLBACK_URL', default='')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://kijijigas-production.up.railway.app',
+    'https://kijijigas.com',
+]
